@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import { Typewriter } from "react-simple-typewriter";
 import img from "../assets/Takmim (2).jpg";
+import resume from '../assets/My_Resume.pdf'
 
 const Banner = () => {
   return (
@@ -80,7 +81,7 @@ const Banner = () => {
               </div>
             </a>
           </div>
-          <a download="Resume">
+          <a href={resume} download="Resume">
             <button className="btn flex text-center justify-center px-4 space-x-2 rounded-full py-2 bg-orange-500 hover:bg-orange-700  hover:text-white  items-center text-xl text-black">
               <span className="">Download Resume</span>
               <FaCloudDownloadAlt className="" />

@@ -1,6 +1,7 @@
 import { FaCloudDownloadAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import logo from '../assets/logo.png'
+import resume from '../assets/My_Resume.pdf'
 
 const Navbar = () => {
   return (
@@ -15,7 +16,7 @@ const Navbar = () => {
           </Link>
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             
-            <a download="Resume">
+            <a href={resume} download="Resume">
               
                 <button className="btn flex text-center justify-center px-4 space-x-2 rounded-full py-2 bg-orange-500  hover:bg-orange-700 hover:text-white  items-center text-xl text-black">
                   <span className="">Download Resume</span>
