@@ -34,7 +34,6 @@ const Contact = () => {
         setEmail("");
         setMessage("");
         toast.success("Email sent successfully!");
-        console.log(templateParams);
       })
       .catch((error) => {
         toast.error("Failed to send email.");
@@ -54,7 +53,7 @@ const Contact = () => {
       <div className="flex w-11/12 mx-auto md:flex-row flex-col  justify-evenly gap-40 mt-10">
         {/* from section */}
 
-        <div className="w-1/2">
+        <div className="md:w-1/2 w-full">
           <form
             ref={form}
             onSubmit={handleSubmit}
@@ -70,6 +69,7 @@ const Contact = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                   className="w-full bg-stone-800 text-amber-400 focus:outline-none"
                   placeholder="Your email"
                 />
@@ -108,7 +108,7 @@ const Contact = () => {
                 </div>
               </div>
               <div className="text-white lg:mt-8 mt-8 ml-10">
-                <h1 className="text-3xl ">Alangkar</h1>
+                <h1 className="md:text-3xl text-2xl">Alangkar</h1>
                 <h1>Chittagong,Bangladesh</h1>
               </div>
             </div>
@@ -122,7 +122,7 @@ const Contact = () => {
                 </div>
               </div>
               <div className="text-white lg:mt-8 mt-8 ml-10">
-                <h1 className="text-3xl ">Email</h1>
+                <h1 className="md:text-3xl text-2xl ">Email</h1>
                 <h1>takmimm@gmail.com</h1>
               </div>
             </div>
@@ -135,9 +135,9 @@ const Contact = () => {
                 </div>
               </div>
               <div className="text-white lg:mt-8 mt-8 ml-10">
-                <h1 className="text-3xl ">Phone/Whatsapp</h1>
+                <h1 className="md:text-3xl text-2xl ">Phone/Whatsapp</h1>
                 <a
-                  href="https://wa.me/8801824096141" 
+                  href="https://wa.me/8801824096141"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-amber-400"

@@ -48,7 +48,7 @@ const ProjectDetails = () => {
     <div className="p-6">
       {project ? (
         <>
-          <div className="text-center mb-10">
+          <div className="text-center my-16">
             <h1 className="text-center lg:text-7xl text-4xl font-abc font-extrabold text-white">
               {project.title}
             </h1>
@@ -56,11 +56,11 @@ const ProjectDetails = () => {
               <span className="text-sm">MY</span> Project Details
             </p>
           </div>
-          <div className=" flex flex-col border-2 border-orange-500 lg:flex-row gap-8 w-8/12 mx-auto bg-white text-black rounded-2xl p-6">
+          <div className=" flex flex-col border-2 border-orange-500 lg:flex-row gap-8 lg:w-10/12 md:w-8/12 mx-auto bg-white text-black rounded-2xl p-6">
             <div className="px-5 py-5 bg-[#F3F3F3] items-center rounded-xl">
               <img
                 src={project.image}
-                className="max-w-sm h-full object-cover"
+                className="md:max-w-sm h-full object-cover"
               />
             </div>
             <div className="space-y-4 ">
