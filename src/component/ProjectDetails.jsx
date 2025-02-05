@@ -7,12 +7,13 @@ const ProjectDetails = () => {
   const projectData = [
     {
       id: 1,
-      title: "Gadget Heaven",
+      title: "Study Hive",
       description:
-        "Develop an e-commerce platform for GadgetHaven, a gadget-buying website. Key functionalities include a shopping cart, a wishlist system, and product filtering. The Context API will manage the cart and wishlist, with optional LocalStorage for data persistence. Additional pages will allow users to view and manage their cart and wishlist, sort items by price, and ensure a smooth user experience.",
-      image: "https://i.ibb.co.com/PGKPsqz/gadget-heaven.png",
-      liveLink: "https://gadgets-havens.netlify.app/",
-      clientRepo: "https://github.com/Takmim00/Gadget-haven",
+        "Study Hive is a user-friendly platform designed to connect tutors and students. Tutors can apply to offer courses, and students can book these approved courses. The admin can manage user roles, approve or reject courses, and control the platform's functionality. Students can also write, update, and delete notes, as well as view materials provided by tutors for approved sessions.",
+      image: "https://i.ibb.co.com/JbMJ9Vd/Screenshot-2025-02-05-215501.png",
+      liveLink: "https://study-hive-9b382.web.app",
+      clientRepo: "https://github.com/Takmim00/Study-Hive",
+      serverRepo: "https://github.com/Takmim00/study-Hive-Server",
       overlayText: "Explore More",
     },
     {
