@@ -23,7 +23,7 @@ const Navbar = () => {
                 <FaCloudDownloadAlt className="" />
               </button>
             </a>
-            <div className="dropdown">
+            <div className="dropdown dropdown-right">
               <div
                 tabIndex={0}
                 role="button"

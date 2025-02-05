@@ -7,8 +7,8 @@ import {
   FaLinkedin,
 } from "react-icons/fa";
 import { Typewriter } from "react-simple-typewriter";
+import resume from "../assets/My_Resume.pdf";
 import img from "../assets/Takmim (2).jpg";
-import resume from '../assets/My_Resume.pdf'
 
 const Banner = () => {
   return (
@@ -23,6 +23,10 @@ const Banner = () => {
         >
           <div>
             <br />
+            <h2 className="lg:text-5xl text-2xl md:text-4xl font-bold mb-5">
+              Hello, I am{" "} <br />
+              <span className="text-amber-400">A S M Maghferat Takmim</span>
+            </h2>
             <h2 className="lg:text-5xl text-2xl md:text-4xl  font-bold  mb-5">
               <span className="text-amber-400">
                 <Typewriter
