@@ -4,43 +4,54 @@
 
 /* Custom animations */
 @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  from {
+    transform: rotate(0deg);
   }
-  
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 0.7;
-    }
-    50% {
-      opacity: 0.3;
-    }
+  to {
+    transform: rotate(360deg);
   }
-  
-  @keyframes bounce {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-25%);
-    }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.7;
   }
-  
-  .animate-spin-slow {
-    animation: spin 8s linear infinite;
+  50% {
+    opacity: 0.3;
   }
-  
-  .animate-pulse-slow {
-    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
   }
-  
-  .animate-bounce-slow {
-    animation: bounce 2s infinite;
+  50% {
+    transform: translateY(-25%);
   }
-  
+}
+
+.animate-spin-slow {
+  animation: spin 8s linear infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-bounce-slow {
+  animation: bounce 2s infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(100px, 50px);
+  }
+  100% {
+    transform: translate(-100px, -50px);
+  }
+}
