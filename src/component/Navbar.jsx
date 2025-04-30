@@ -1,157 +1,276 @@
-import { FaCloudDownloadAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Download, Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import logo from "../assets/logo.png";
 import resume from "../assets/My_Resume.pdf";
 
-const Navbar = () => {
+const cn = (...classes) => classes.filter(Boolean).join(" ");
+
+export default function Navbar() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("banner");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Handle scroll effects and section highlighting
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+
+      const sections = ["banner", "about", "skill", "project", "contact"];
+      const currentSection = sections.find((section) => {
+        const element = document.getElementById(section);
+        if (!element) return false;
+
+        const rect = element.getBoundingClientRect();
+        return rect.top <= 100 && rect.bottom >= 100;
+      });
+
+      if (currentSection) {
+        setActiveSection(currentSection);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close mobile menu on resize to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMobileMenuOpen(false);
+        document.body.style.overflow = ""; // unlock scroll
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Lock scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+  }, [mobileMenuOpen]);
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      window.scrollTo({
+        top: element.offsetTop - 80,
+        behavior: "smooth",
+      });
+    }
+    setMobileMenuOpen(false);
+  };
+
   return (
-    <div>
-      <nav className="bg-slate-500 fixed w-full z-20  top-0 bg-opacity-30 tone-700 start-0 border-b border-gray-200 dark:border-gray-600">
-        <div className="md:w-11/12 flex flex-wrap items-center justify-between mx-auto  py-4">
-          <Link
-            to="/"
-            href="https://flowbite.com/"
-            className="flex items-center space-x-3 rtl:space-x-reverse"
+    <nav
+      className={cn(
+        "fixed top-0 left-0 w-full z-50 transition-all duration-300 backdrop-blur-md",
+        isScrolled ? "bg-black/40 py-3 shadow-lg" : "bg-transparent py-5"
+      )}
+    >
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <a
+            href="#banner"
+            className="flex items-center"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection("banner");
+            }}
           >
-            <img src={logo} className="h-16" alt="" />
-          </Link>
-          <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            <a href={resume} download="Resume">
-              <button className="btn hidden md:flex text-center justify-center md:px-4 px-2 py-1
-               space-x-2 rounded-full md:py-2  bg-orange-500  hover:bg-orange-700 hover:text-white  items-center text-xl text-black">
-                <span className="text-xl">Download Resume</span>
-                <FaCloudDownloadAlt className="" />
-              </button>
-            </a>
-            <div className="dropdown dropdown-right">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost lg:hidden"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h8m-8 6h16"
-                  />
-                </svg>
-              </div>
-              <ul
-                tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-              >
-                <li>
-                  <Link
-                    to="/"
-                    className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
-                    aria-current="page"
-                  >
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <a
-                    href="#about"
-                    className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
-                    aria-current="page"
-                  >
-                    About Me
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#skill"
-                    className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
-                    aria-current="page"
-                  >
-                    Skill
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#project"
-                    className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
-                    aria-current="page"
-                  >
-                    Project
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#contact"
-                    className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
-                    aria-current="page"
-                  >
-                    Contact
-                  </a>
-                </li>
-              </ul>
+            <div className="relative h-14 w-14 md:h-16 md:w-16 overflow-hidden">
+              <img
+                src={logo}
+                alt="Portfolio Logo"
+                className="object-contain h-full w-full"
+              />
             </div>
+          </a>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            <NavLinks
+              activeSection={activeSection}
+              scrollToSection={scrollToSection}
+            />
           </div>
-          <div
-            className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-            id="navbar-sticky"
+
+          {/* Resume Button (Desktop) */}
+          <div className="hidden md:block">
+            <a
+              href={resume}
+              download="My_Resume"
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border-2 border-orange-500 px-6 py-3 font-medium text-orange-500 shadow-md transition duration-300 ease-out"
+            >
+              <span className="ease absolute inset-0 flex h-full w-full -translate-y-full items-center justify-center bg-orange-500 text-white duration-300 group-hover:translate-y-0">
+                <Download className="mr-2 h-5 w-5" />
+                Download Resume
+              </span>
+              <span className="ease absolute inset-0 flex h-full w-full translate-y-0 items-center justify-center text-orange-500 duration-300 group-hover:translate-y-full">
+                <Download className="mr-2 h-5 w-5" />
+                Download Resume
+              </span>
+              <span className="invisible relative">Download Resume</span>
+            </a>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden text-white bg-orange-500 hover:bg-orange-600 p-2 rounded-full transition-colors"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
           >
-            <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg  md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0   bg-opacity-5 tone-700">
-              <li>
-                <Link
-                  to="/"
-                  className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
-                  aria-current="page"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <a
-                  href="#about"
-                  className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
-                  aria-current="page"
-                >
-                  About Me
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#skill"
-                  className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
-                  aria-current="page"
-                >
-                  Skill
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#project"
-                  className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
-                  aria-current="page"
-                >
-                  Project
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#contact"
-                  className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
-                  aria-current="page"
-                >
-                  Contact
-                </a>
-              </li>
-            </ul>
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      <div
+        className={cn(
+          "fixed inset-0 z-40 bg-black/95 backdrop-blur-lg transform transition-transform duration-300 ease-in-out",
+          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        )}
+      >
+        <div className="flex flex-col h-full pt-24 px-8">
+          <div className="flex flex-col space-y-2">
+            <MobileNavLinks
+              activeSection={activeSection}
+              scrollToSection={scrollToSection}
+            />
+          </div>
+          <div className="mt-8">
+            <a
+              href={resume}
+              download="My_Resume"
+              className="flex items-center space-x-2 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg transition-colors w-full justify-center"
+            >
+              <Download className="h-5 w-5" />
+              <span>Download Resume</span>
+            </a>
           </div>
         </div>
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
-};
+}
 
-export default Navbar;
+function NavLinks({ activeSection, scrollToSection }) {
+  return (
+    <>
+      <NavLink
+        sectionId="banner"
+        label="Home"
+        isActive={activeSection === "banner"}
+        scrollToSection={scrollToSection}
+      />
+      <NavLink
+        sectionId="about"
+        label="About Me"
+        isActive={activeSection === "about"}
+        scrollToSection={scrollToSection}
+      />
+      <NavLink
+        sectionId="skill"
+        label="Skills"
+        isActive={activeSection === "skill"}
+        scrollToSection={scrollToSection}
+      />
+      <NavLink
+        sectionId="project"
+        label="Projects"
+        isActive={activeSection === "project"}
+        scrollToSection={scrollToSection}
+      />
+      <NavLink
+        sectionId="contact"
+        label="Contact"
+        isActive={activeSection === "contact"}
+        scrollToSection={scrollToSection}
+      />
+    </>
+  );
+}
+
+function MobileNavLinks({ activeSection, scrollToSection }) {
+  return (
+    <>
+      <MobileNavLink
+        sectionId="banner"
+        label="Home"
+        isActive={activeSection === "banner"}
+        scrollToSection={scrollToSection}
+      />
+      <MobileNavLink
+        sectionId="about"
+        label="About Me"
+        isActive={activeSection === "about"}
+        scrollToSection={scrollToSection}
+      />
+      <MobileNavLink
+        sectionId="skill"
+        label="Skills"
+        isActive={activeSection === "skill"}
+        scrollToSection={scrollToSection}
+      />
+      <MobileNavLink
+        sectionId="project"
+        label="Projects"
+        isActive={activeSection === "project"}
+        scrollToSection={scrollToSection}
+      />
+      <MobileNavLink
+        sectionId="contact"
+        label="Contact"
+        isActive={activeSection === "contact"}
+        scrollToSection={scrollToSection}
+      />
+    </>
+  );
+}
+
+function NavLink({ sectionId, label, isActive, scrollToSection }) {
+  const cn = (...classes) => classes.filter(Boolean).join(" ");
+  return (
+    <a
+      href={`#${sectionId}`}
+      className={cn(
+        "relative text-white font-medium text-lg transition-colors duration-300",
+        "after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-orange-500 after:transition-all after:duration-300",
+        isActive
+          ? "text-orange-500 after:w-full"
+          : "hover:text-orange-500 after:w-0 hover:after:w-full"
+      )}
+      onClick={(e) => {
+        e.preventDefault();
+        scrollToSection(sectionId);
+      }}
+    >
+      {label}
+    </a>
+  );
+}
+
+function MobileNavLink({ sectionId, label, isActive, scrollToSection }) {
+  return (
+    <a
+      href={`#${sectionId}`}
+      className={cn(
+        "text-xl font-medium py-2 px-4 rounded-lg transition-all duration-200",
+        isActive
+          ? "bg-orange-500/20 text-orange-500 border-l-4 border-orange-500"
+          : "text-white hover:text-orange-500 hover:bg-white/5 border-l-4 border-transparent"
+      )}
+      onClick={(e) => {
+        e.preventDefault();
+        scrollToSection(sectionId);
+      }}
+    >
+      {label}
+    </a>
+  );
+}
