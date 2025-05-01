@@ -1,5 +1,6 @@
 import { Download, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
 import resume from "../assets/My_Resume.pdf";
 
@@ -71,22 +72,25 @@ export default function Navbar() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a
-            href="#banner"
+          <Link
+            to="/"
             className="flex items-center"
             onClick={(e) => {
               e.preventDefault();
               scrollToSection("banner");
             }}
           >
-            <div className="relative h-14 w-14 md:h-16 md:w-16 overflow-hidden">
+            <Link
+              to="/"
+              className="relative h-14 w-14 md:h-16 md:w-16 overflow-hidden"
+            >
               <img
                 src={logo}
                 alt="Portfolio Logo"
                 className="object-contain h-full w-full"
               />
-            </div>
-          </a>
+            </Link>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
@@ -163,6 +167,7 @@ function NavLinks({ activeSection, scrollToSection }) {
   return (
     <>
       <NavLink
+        to="/"
         sectionId="banner"
         label="Home"
         isActive={activeSection === "banner"}

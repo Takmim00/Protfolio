@@ -163,7 +163,7 @@ const SkillsShowcase = () => {
       name: "CSS3",
       icon: SiCss3,
       color: "#1572B6",
-      level: 90,
+      level: 100,
       category: "frontend",
       description: "Advanced layouts and animations",
       details:
@@ -183,7 +183,7 @@ const SkillsShowcase = () => {
       name: "JavaScript",
       icon: TbBrandJavascript,
       color: "#F7DF1E",
-      level: 85,
+      level: 100,
       category: "frontend",
       description: "ES6+ and modern patterns",
       details:
@@ -196,7 +196,7 @@ const SkillsShowcase = () => {
       name: "React",
       icon: RiReactjsLine,
       color: "#61DAFB",
-      level: 90,
+      level: 100,
       category: "frontend",
       description: "Component architecture and hooks",
       details:
@@ -209,7 +209,7 @@ const SkillsShowcase = () => {
       name: "Next.js",
       icon: SiNextdotjs,
       color: "#ffffff",
-      level: 40,
+      level: 100,
       category: "frontend",
       description: "Server-side rendering",
       details:
@@ -222,7 +222,7 @@ const SkillsShowcase = () => {
       name: "Tailwind",
       icon: RiTailwindCssFill,
       color: "#06B6D4",
-      level: 95,
+      level: 100,
       category: "frontend",
       description: "Utility-first CSS",
       details:
@@ -235,7 +235,7 @@ const SkillsShowcase = () => {
       name: "Node.js",
       icon: FaNodeJs,
       color: "#339933",
-      level: 80,
+      level: 100,
       category: "backend",
       description: "Server-side JavaScript",
       details:
@@ -248,7 +248,7 @@ const SkillsShowcase = () => {
       name: "Express",
       icon: SiExpress,
       color: "#FFFFFF",
-      level: 75,
+      level: 100,
       category: "backend",
       description: "Web application framework",
       details:
@@ -268,7 +268,7 @@ const SkillsShowcase = () => {
       name: "MongoDB",
       icon: SiMongodb,
       color: "#47A248",
-      level: 70,
+      level: 100,
       category: "backend",
       description: "NoSQL database",
       details:
@@ -281,7 +281,7 @@ const SkillsShowcase = () => {
       name: "Firebase",
       icon: RiFirebaseFill,
       color: "#FFCA28",
-      level: 75,
+      level: 100,
       category: "backend",
       description: "Backend as a service",
       details:
@@ -294,7 +294,7 @@ const SkillsShowcase = () => {
       name: "GitHub",
       icon: FaGithub,
       color: "#FFFFFF",
-      level: 85,
+      level: 100,
       category: "tools",
       description: "Version control and collaboration",
       details:
@@ -307,7 +307,7 @@ const SkillsShowcase = () => {
       name: "Figma",
       icon: FaFigma,
       color: "#F24E1E",
-      level: 70,
+      level: 100,
       category: "tools",
       description: "UI/UX design and prototyping",
       details:

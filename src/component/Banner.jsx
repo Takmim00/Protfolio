@@ -319,7 +319,7 @@ const Banner = () => {
             >
               <SocialIcon
                 icon={Linkedin}
-                href="https://www.linkedin.com/in/maghferat-takmim-486411322/"
+                href="https://www.linkedin.com/in/asm-maghferat-takmim89/"
                 delay={0.1}
               />
               <SocialIcon

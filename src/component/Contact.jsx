@@ -1,155 +1,697 @@
+"use client";
+
 import emailjs from "@emailjs/browser";
-import { useRef, useState } from "react";
-import { IoIosMailOpen } from "react-icons/io";
-import { MdPhoneMissed } from "react-icons/md";
-import { PiAddressBookFill } from "react-icons/pi";
-import { ToastContainer, toast } from "react-toastify";
+import { motion, useAnimation, useInView } from "framer-motion";
+import {
+  Github,
+  Instagram,
+  Linkedin,
+  Loader2,
+  Mail,
+  MapPin,
+  Phone,
+  Send,
+  Twitter,
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Contact = () => {
-  const form = useRef();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [activeTab, setActiveTab] = useState("message");
+  const formRef = useRef(null);
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: false, threshold: 0.2 });
+  const controls = useAnimation();
 
-  const handleSubmit = (e) => {
+  // Floating elements animation
+  const floatingElements = Array.from({ length: 15 }).map((_, i) => ({
+    id: i,
+    size: Math.random() * 10 + 5,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    duration: Math.random() * 10 + 15,
+    delay: Math.random() * 5,
+  }));
+
+  useEffect(() => {
+    if (isInView) {
+      controls.start("visible");
+    }
+  }, [isInView, controls]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Clear error when user types
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) newErrors.name = "Name is required";
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      newErrors.email = "Email is invalid";
+    }
+    if (!formData.subject.trim()) newErrors.subject = "Subject is required";
+    if (!formData.message.trim()) newErrors.message = "Message is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const serviceId = "service_e9iqelg";
-    const templateId = "template_ecf26bv";
-    const publicKey = "_FMPfnej307GndFRC";
+    if (!validateForm()) return;
 
-    const templateParams = {
-      from_name: name,
-      from_email: email,
-      to_name: "Takmim",
-      reply_to: email,
-      message: message,
-    };
+    setIsSubmitting(true);
 
-    // Send the email using EmailJS
-    emailjs
-      .send(serviceId, templateId, templateParams, publicKey)
-      .then((response) => {
-        setName("");
-        setEmail("");
-        setMessage("");
-        toast.success("Email sent successfully!");
-      })
-      .catch((error) => {
-        toast.error("Failed to send email.");
-      });
+    try {
+      // Replace with your EmailJS service ID, template ID, and public key
+      const serviceId = "service_e9iqelg";
+      const templateId = "template_ecf26bv";
+      const publicKey = "_FMPfnej307GndFRC";
+
+      if (formRef.current) {
+        await emailjs.sendForm(
+          serviceId,
+          templateId,
+          formRef.current,
+          publicKey
+        );
+        toast.success("Message sent successfully! I'll get back to you soon.");
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      }
+    } catch (error) {
+      console.error("Failed to send email:", error);
+      toast.error("Failed to send message. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <div className=" bg-black py-10">
-      <ToastContainer />
-      <h1 className="text-center lg:text-7xl text-4xl lg:pt-0 pt-20 font-abc font-extrabold text-white">
-        CONTACT ME
-      </h1>
-      <h1 className="text-2xl font-abc text-center text-amber-400">
-        <span className="text-sm ">LET'S</span> Talk About Ideas
-      </h1>
+    <section
+      ref={containerRef}
+      className="relative py-18 overflow-hidden bg-gradient-to-b from-black to-gray-900"
+      id="contact"
+    >
+      <ToastContainer position="top-right" theme="dark" />
 
-      <div className="flex w-11/12 mx-auto md:flex-row flex-col  justify-evenly gap-40 mt-10">
-        {/* from section */}
+      {/* Floating elements background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {floatingElements.map((el) => (
+          <motion.div
+            key={el.id}
+            className="absolute rounded-full bg-gradient-to-r from-amber-500/10 to-orange-500/20"
+            style={{ width: el.size, height: el.size }}
+            initial={{ x: `${el.x}%`, y: `${el.y}%`, opacity: 0.2 }}
+            animate={{
+              x: [`${el.x}%`, `${el.x + 10}%`, `${el.x - 5}%`, `${el.x}%`],
+              y: [`${el.y}%`, `${el.y - 15}%`, `${el.y + 10}%`, `${el.y}%`],
+              opacity: [0.2, 0.5, 0.3, 0.2],
+            }}
+            transition={{
+              duration: el.duration,
+              repeat: Number.POSITIVE_INFINITY,
+              delay: el.delay,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+      </div>
 
-        <div className="md:w-1/2 w-full">
-          <form
-            ref={form}
-            onSubmit={handleSubmit}
-            className="flex  flex-col w-full justify-center "
+      {/* Hexagon grid background */}
+      <div className="absolute inset-0 opacity-5">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <pattern
+            id="hexagons"
+            width="50"
+            height="43.4"
+            patternUnits="userSpaceOnUse"
+            patternTransform="scale(2)"
           >
-            <div className="mt-5">
-              <label className="text-white mb-2 block text-lg">
-                Email Address <span className="text-amber-400">*</span>
-              </label>
-              <div className="flex items-center border-2 rounded-full px-8 py-3 bg-stone-800 border-amber-400">
-                <IoIosMailOpen className="text-amber-400 mr-2" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full bg-stone-800 text-amber-400 focus:outline-none"
-                  placeholder="Your email"
-                />
-              </div>
-            </div>
+            <path
+              d="M25,0 L50,14.4 L50,43.4 L25,57.8 L0,43.4 L0,14.4 Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+            />
+          </pattern>
+          <rect width="100%" height="100%" fill="url(#hexagons)" />
+        </svg>
+      </div>
 
-            <div className="mt-5">
-              <label className="text-white mb-2 block text-lg">
-                Description <span className="text-amber-400">*</span>
-              </label>
-              <textarea
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                className="border-2 w-full rounded-3xl px-8 py-4 text-amber-400 border-amber-400 bg-stone-800 h-36 resize-none focus:outline-none"
-                placeholder="Your message"
-              />
-            </div>
+      <div className="container relative z-10 px-4 mx-auto">
+        {/* Section header */}
+        <motion.div
+          className="mb-16 text-center"
+          initial={{ opacity: 0, y: -20 }}
+          animate={controls}
+          variants={{
+            visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+          }}
+        >
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-extrabold">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-600">
+              CONTACT ME
+            </span>
+          </h2>
+          <motion.div
+            className="h-1 mx-auto mt-4 bg-gradient-to-r from-amber-400 to-orange-600"
+            initial={{ width: 0 }}
+            animate={controls}
+            variants={{
+              visible: {
+                width: "150px",
+                transition: { duration: 1, delay: 0.3 },
+              },
+            }}
+          />
+          <motion.p
+            className="max-w-2xl mx-auto mt-6 text-lg text-gray-400"
+            initial={{ opacity: 0 }}
+            animate={controls}
+            variants={{
+              visible: {
+                opacity: 1,
+                transition: { duration: 0.8, delay: 0.5 },
+              },
+            }}
+          >
+            Let's collaborate and bring your ideas to life
+          </motion.p>
+        </motion.div>
 
-            <button
-              type="submit"
-              className="btn glass bg-amber-500 text-black mt-5 w-full text-2xl font-abc font-bold hover:text-amber-400"
-            >
-              Send Me
-            </button>
-          </form>
-        </div>
+        {/* Main contact card */}
+        <motion.div
+          className="max-w-5xl mx-auto"
+          initial={{ opacity: 0, y: 50 }}
+          animate={controls}
+          variants={{
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.8, delay: 0.3 },
+            },
+          }}
+        >
+          <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-md rounded-3xl border border-gray-800">
+            {/* Decorative elements */}
+            <div className="absolute top-0 left-0 w-40 h-40 bg-gradient-to-r from-amber-500/20 to-orange-600/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
+            <div className="absolute bottom-0 right-0 w-60 h-60 bg-gradient-to-r from-orange-600/20 to-amber-500/20 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
 
-        <div className="w-1/2 flex lg:space-x-20">
-          <div>
-            <div className="flex">
-              <div className="flex">
-                <div className="mt-10 ml-10">
-                  <h1 className="text-2xl hover:text-white p-3 border-x-2 border-y-2 rounded-full border-amber-500 text-amber-400">
-                    <PiAddressBookFill></PiAddressBookFill>
-                  </h1>
-                </div>
-              </div>
-              <div className="text-white lg:mt-8 mt-8 ml-10">
-                <h1 className="md:text-3xl text-2xl">Alangkar</h1>
-                <h1>Chittagong,Bangladesh</h1>
-              </div>
-            </div>
-
-            <div className="flex">
-              <div className="flex">
-                <div className="mt-10 ml-10">
-                  <h1 className="text-2xl hover:text-white p-3 border-x-2 border-y-2 rounded-full border-amber-500 text-amber-400">
-                    <IoIosMailOpen></IoIosMailOpen>
-                  </h1>
-                </div>
-              </div>
-              <div className="text-white lg:mt-8 mt-8 ml-10">
-                <h1 className="md:text-3xl text-2xl ">Email</h1>
-                <h1>takmimm@gmail.com</h1>
-              </div>
-            </div>
-            <div className="flex">
-              <div className="flex">
-                <div className="mt-10 ml-10">
-                  <h1 className="text-2xl hover:text-white p-3 border-x-2 border-y-2 rounded-full border-amber-500 text-amber-400">
-                    <MdPhoneMissed></MdPhoneMissed>
-                  </h1>
-                </div>
-              </div>
-              <div className="text-white lg:mt-8 mt-8 ml-10">
-                <h1 className="md:text-3xl text-2xl ">Phone/Whatsapp</h1>
-                <a
-                  href="https://wa.me/8801824096141"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-amber-400"
+            {/* Content container */}
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-5">
+              {/* Left side - Contact info */}
+              <div className="p-8 lg:p-12 lg:col-span-2 bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur-md">
+                <motion.h3
+                  className="mb-6 text-2xl font-bold text-white"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={controls}
+                  variants={{
+                    visible: {
+                      opacity: 1,
+                      x: 0,
+                      transition: { duration: 0.6, delay: 0.4 },
+                    },
+                  }}
                 >
-                  01824096141
-                </a>
+                  Contact Information
+                </motion.h3>
+
+                <div className="space-y-8">
+                  {/* Contact details with staggered animations */}
+                  {[
+                    {
+                      icon: Mail,
+                      title: "Email",
+                      value: "takmimm@gmail.com",
+                      link: "mailto:takmimm@gmail.com",
+                      delay: 0.5,
+                    },
+                    {
+                      icon: Phone,
+                      title: "Phone",
+                      value: "+880 1824096141",
+                      link: "tel:+8801824096141",
+                      delay: 0.6,
+                    },
+                    {
+                      icon: MapPin,
+                      title: "Location",
+                      value: "Alangkar, Chittagong, Bangladesh",
+                      delay: 0.7,
+                    },
+                  ].map((item, index) => (
+                    <motion.div
+                      key={index}
+                      className="flex items-start gap-4"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={controls}
+                      variants={{
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          transition: { duration: 0.6, delay: item.delay },
+                        },
+                      }}
+                    >
+                      <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-amber-500/20 to-orange-600/20 backdrop-blur-sm">
+                        <item.icon className="w-5 h-5 text-amber-400" />
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-medium text-white">
+                          {item.title}
+                        </h4>
+                        {item.link ? (
+                          <a
+                            href={item.link}
+                            className="text-gray-400 hover:text-amber-400 transition-colors duration-300"
+                          >
+                            {item.value}
+                          </a>
+                        ) : (
+                          <p className="text-gray-400">{item.value}</p>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Social media links */}
+                <motion.div
+                  className="mt-12 pt-8 border-t border-gray-800/50"
+                  initial={{ opacity: 0 }}
+                  animate={controls}
+                  variants={{
+                    visible: {
+                      opacity: 1,
+                      transition: { duration: 0.8, delay: 0.8 },
+                    },
+                  }}
+                >
+                  <h4 className="mb-6 text-lg font-medium text-white">
+                    Follow Me
+                  </h4>
+                  <div className="flex flex-wrap gap-4">
+                    {[
+                      {
+                        icon: Github,
+                        href: "https://github.com/Takmim00",
+                        delay: 0.9,
+                      },
+                      {
+                        icon: Linkedin,
+                        href: "https://www.linkedin.com/in/asm-maghferat-takmim89/",
+                        delay: 1.0,
+                      },
+                      {
+                        icon: Instagram,
+                        href: "https://www.instagram.com/takmim_00/",
+                        delay: 1.1,
+                      },
+                      {
+                        icon: Twitter,
+                        href: "https://x.com/MTakmim58515",
+                        delay: 1.2,
+                      },
+                    ].map((social, index) => (
+                      <motion.a
+                        key={index}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group relative"
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={controls}
+                        variants={{
+                          visible: {
+                            opacity: 1,
+                            scale: 1,
+                            transition: {
+                              type: "spring",
+                              stiffness: 260,
+                              damping: 20,
+                              delay: social.delay,
+                            },
+                          },
+                        }}
+                        whileHover={{ y: -5 }}
+                      >
+                        <span className="absolute inset-0 rounded-full bg-gradient-to-r from-amber-400 to-orange-600 blur-md opacity-0 group-hover:opacity-70 transition-opacity duration-300" />
+                        <div className="relative flex items-center justify-center w-10 h-10 rounded-full border border-gray-700 bg-gray-900 text-gray-400 group-hover:text-white group-hover:border-amber-400 transition-all duration-300">
+                          <social.icon className="w-5 h-5" />
+                        </div>
+                      </motion.a>
+                    ))}
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Right side - Form */}
+              <div className="p-8 lg:p-12 lg:col-span-3">
+                {/* Mobile tabs */}
+                <div className="flex mb-8 lg:hidden">
+                  <button
+                    className={`flex-1 py-2 text-center transition-colors duration-300 ${
+                      activeTab === "message"
+                        ? "text-amber-400 border-b-2 border-amber-400"
+                        : "text-gray-400 border-b border-gray-800"
+                    }`}
+                    onClick={() => setActiveTab("message")}
+                  >
+                    Send Message
+                  </button>
+                  <button
+                    className={`flex-1 py-2 text-center transition-colors duration-300 ${
+                      activeTab === "info"
+                        ? "text-amber-400 border-b-2 border-amber-400"
+                        : "text-gray-400 border-b border-gray-800"
+                    }`}
+                    onClick={() => setActiveTab("info")}
+                  >
+                    Contact Info
+                  </button>
+                </div>
+
+                {/* Mobile contact info (shown only on mobile when activeTab is "info") */}
+                {activeTab === "info" && (
+                  <div className="lg:hidden space-y-6 mb-8">
+                    {[
+                      {
+                        icon: Mail,
+                        title: "Email",
+                        value: "takmimm@gmail.com",
+                        link: "mailto:takmimm@gmail.com",
+                      },
+                      {
+                        icon: Phone,
+                        title: "Phone",
+                        value: "+880 1824096141",
+                        link: "tel:+8801824096141",
+                      },
+                      {
+                        icon: MapPin,
+                        title: "Location",
+                        value: "Alangkar, Chittagong, Bangladesh",
+                      },
+                    ].map((item, index) => (
+                      <div key={index} className="flex items-start gap-4">
+                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-amber-500/20 to-orange-600/20">
+                          <item.icon className="w-4 h-4 text-amber-400" />
+                        </div>
+                        <div>
+                          <h4 className="text-base font-medium text-white">
+                            {item.title}
+                          </h4>
+                          {item.link ? (
+                            <a
+                              href={item.link}
+                              className="text-sm text-gray-400 hover:text-amber-400 transition-colors duration-300"
+                            >
+                              {item.value}
+                            </a>
+                          ) : (
+                            <p className="text-sm text-gray-400">
+                              {item.value}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+
+                    {/* Social links for mobile */}
+                    <div className="pt-6 border-t border-gray-800/50">
+                      <h4 className="mb-4 text-base font-medium text-white">
+                        Follow Me
+                      </h4>
+                      <div className="flex gap-3">
+                        {[
+                          { icon: Github, href: "https://github.com/Takmim00" },
+                          {
+                            icon: Linkedin,
+                            href: "https://www.linkedin.com/in/asm-maghferat-takmim89/",
+                          },
+                          {
+                            icon: Instagram,
+                            href: "https://www.instagram.com/takmim_00/",
+                          },
+                          { icon: Twitter, href: "#" },
+                        ].map((social, index) => (
+                          <a
+                            key={index}
+                            href={social.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center w-9 h-9 rounded-full border border-gray-700 bg-gray-900 text-gray-400 hover:text-white hover:border-amber-400 transition-all duration-300"
+                          >
+                            <social.icon className="w-4 h-4" />
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Contact form (shown on desktop or when activeTab is "message") */}
+                {(activeTab === "message" || window.innerWidth >= 1024) && (
+                  <>
+                    <motion.h3
+                      className="mb-6 text-2xl font-bold text-white"
+                      initial={{ opacity: 0 }}
+                      animate={controls}
+                      variants={{
+                        visible: {
+                          opacity: 1,
+                          transition: { duration: 0.6, delay: 0.4 },
+                        },
+                      }}
+                    >
+                      Send Me a Message
+                    </motion.h3>
+
+                    <form
+                      ref={formRef}
+                      onSubmit={handleSubmit}
+                      className="space-y-6"
+                    >
+                      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        {/* Name field */}
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={controls}
+                          variants={{
+                            visible: {
+                              opacity: 1,
+                              y: 0,
+                              transition: { duration: 0.6, delay: 0.5 },
+                            },
+                          }}
+                        >
+                          <label className="block mb-2 text-sm font-medium text-white">
+                            Your Name
+                          </label>
+                          <div
+                            className={`relative rounded-lg overflow-hidden ${
+                              errors.name ? "ring-2 ring-red-500" : ""
+                            }`}
+                          >
+                            <input
+                              type="text"
+                              name="name"
+                              value={formData.name}
+                              onChange={handleChange}
+                              className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:outline-none focus:border-amber-400 transition-colors duration-300"
+                              placeholder="Your Name"
+                            />
+                            {errors.name && (
+                              <p className="mt-1 text-xs text-red-500">
+                                {errors.name}
+                              </p>
+                            )}
+                          </div>
+                        </motion.div>
+
+                        {/* Email field */}
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={controls}
+                          variants={{
+                            visible: {
+                              opacity: 1,
+                              y: 0,
+                              transition: { duration: 0.6, delay: 0.6 },
+                            },
+                          }}
+                        >
+                          <label className="block mb-2 text-sm font-medium text-white">
+                            Email Address
+                          </label>
+                          <div
+                            className={`relative rounded-lg overflow-hidden ${
+                              errors.email ? "ring-2 ring-red-500" : ""
+                            }`}
+                          >
+                            <input
+                              type="email"
+                              name="email"
+                              value={formData.email}
+                              onChange={handleChange}
+                              className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:outline-none focus:border-amber-400 transition-colors duration-300"
+                              placeholder="your.email@example.com"
+                            />
+                            {errors.email && (
+                              <p className="mt-1 text-xs text-red-500">
+                                {errors.email}
+                              </p>
+                            )}
+                          </div>
+                        </motion.div>
+                      </div>
+
+                      {/* Subject field */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={controls}
+                        variants={{
+                          visible: {
+                            opacity: 1,
+                            y: 0,
+                            transition: { duration: 0.6, delay: 0.7 },
+                          },
+                        }}
+                      >
+                        <label className="block mb-2 text-sm font-medium text-white">
+                          Subject
+                        </label>
+                        <div
+                          className={`relative rounded-lg overflow-hidden ${
+                            errors.subject ? "ring-2 ring-red-500" : ""
+                          }`}
+                        >
+                          <input
+                            type="text"
+                            name="subject"
+                            value={formData.subject}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:outline-none focus:border-amber-400 transition-colors duration-300"
+                            placeholder="Project Inquiry"
+                          />
+                          {errors.subject && (
+                            <p className="mt-1 text-xs text-red-500">
+                              {errors.subject}
+                            </p>
+                          )}
+                        </div>
+                      </motion.div>
+
+                      {/* Message field */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={controls}
+                        variants={{
+                          visible: {
+                            opacity: 1,
+                            y: 0,
+                            transition: { duration: 0.6, delay: 0.8 },
+                          },
+                        }}
+                      >
+                        <label className="block mb-2 text-sm font-medium text-white">
+                          Your Message
+                        </label>
+                        <div
+                          className={`relative rounded-lg overflow-hidden ${
+                            errors.message ? "ring-2 ring-red-500" : ""
+                          }`}
+                        >
+                          <textarea
+                            name="message"
+                            value={formData.message}
+                            onChange={handleChange}
+                            rows={5}
+                            className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:outline-none focus:border-amber-400 transition-colors duration-300 resize-none"
+                            placeholder="Tell me about your project or idea..."
+                          />
+                          {errors.message && (
+                            <p className="mt-1 text-xs text-red-500">
+                              {errors.message}
+                            </p>
+                          )}
+                        </div>
+                      </motion.div>
+
+                      {/* Submit button */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={controls}
+                        variants={{
+                          visible: {
+                            opacity: 1,
+                            y: 0,
+                            transition: { duration: 0.6, delay: 0.9 },
+                          },
+                        }}
+                        className="flex justify-end"
+                      >
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all bg-transparent rounded-lg border-2 border-amber-400 text-amber-400 hover:text-white disabled:opacity-70 disabled:cursor-not-allowed"
+                        >
+                          <span className="absolute inset-0 h-full w-full scale-0 rounded-lg bg-gradient-to-r from-amber-400 to-orange-600 transition-all duration-300 ease-out group-hover:scale-100 group-hover:opacity-90"></span>
+                          <span className="relative flex items-center justify-center gap-2">
+                            {isSubmitting ? (
+                              <>
+                                <Loader2 className="w-5 h-5 animate-spin" />
+                                Sending...
+                              </>
+                            ) : (
+                              <>
+                                Send Message
+                                <Send className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                              </>
+                            )}
+                          </span>
+                        </button>
+                      </motion.div>
+                    </form>
+                  </>
+                )}
               </div>
             </div>
           </div>
+        </motion.div>
+
+        {/* Decorative elements at bottom */}
+        <div className="flex justify-center mt-16">
+          <motion.div
+            className="w-24 h-1 bg-gradient-to-r from-amber-400/50 to-orange-600/50 rounded-full"
+            initial={{ width: 0 }}
+            animate={controls}
+            variants={{
+              visible: { width: "6rem", transition: { duration: 1, delay: 1 } },
+            }}
+          />
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

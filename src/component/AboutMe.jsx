@@ -30,7 +30,7 @@ const AboutMe = () => {
       </div>
 
       {/* Code-like decorative elements */}
-      <div className="absolute left-0 top-20 text-orange-500/20 text-6xl font-mono hidden lg:block">
+      <div className="absolute left-0 top-0 text-orange-500/20 text-6xl font-mono hidden lg:block">
         {"<about>"}
       </div>
       <div className="absolute right-0 bottom-20 text-orange-500/20 text-6xl font-mono hidden lg:block">
@@ -138,44 +138,7 @@ const AboutMe = () => {
               and grow in the web development field.
             </motion.p>
 
-            {/* Skills visualization */}
-            <div className="pt-6">
-              <motion.h3
-                className="text-xl font-bold mb-4 text-amber-400"
-                initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : {}}
-                transition={{ duration: 0.8, delay: 0.7 }}
-              >
-                My Skills
-              </motion.h3>
-
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {skills.map((skill, index) => (
-                  <motion.div
-                    key={skill.name}
-                    className="relative"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
-                  >
-                    <div className="flex justify-between mb-1">
-                      <span className="font-medium">{skill.name}</span>
-                      <span className="text-sm text-gray-400">
-                        {skill.level}%
-                      </span>
-                    </div>
-                    <div className="h-2 w-full bg-gray-700 rounded-full overflow-hidden">
-                      <motion.div
-                        className="h-full bg-gradient-to-r from-amber-400 to-orange-600"
-                        initial={{ width: 0 }}
-                        animate={isInView ? { width: `${skill.level}%` } : {}}
-                        transition={{ duration: 1, delay: 1 + index * 0.1 }}
-                      />
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+            
 
             {/* Call to action */}
             <motion.div
