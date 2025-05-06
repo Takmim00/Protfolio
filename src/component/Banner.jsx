@@ -356,7 +356,7 @@ const Banner = () => {
               >
                 <span className="absolute inset-0 border-2 border-amber-500 rounded-full"></span>
                 <span className="absolute inset-0 border-2 border-orange-600 rounded-full animate-spin-slow opacity-0 group-hover:opacity-100"></span>
-                <span className="relative flex items-center justify-center gap-2 text-amber-400 group-hover:text-white transition-colors duration-300">
+                <span className="relative flex items-center justify-center gap-2 text-amber-400 group-hover:text-white transition-colors duration-300 z-10">
                   Download Resume
                   <Download className="h-5 w-5 animate-bounce-slow" />
                 </span>

@@ -43,9 +43,9 @@ const ProjectDetails = () => {
         "Material sharing between tutors and students",
       ],
       screenshots: [
-        "https://i.ibb.co/JbMJ9Vd/Screenshot-2025-02-05-215501.png",
-        "https://i.ibb.co/JbMJ9Vd/Screenshot-2025-02-05-215501.png",
-        "https://i.ibb.co/JbMJ9Vd/Screenshot-2025-02-05-215501.png",
+        "https://i.ibb.co.com/Y7fWXxVk/study-hive1.png",
+        "https://i.ibb.co.com/NQYgHCQ/study-hive2.png",
+        "https://i.ibb.co.com/mPB9sWw/study-hive3.png",
       ],
     },
     {
@@ -80,9 +80,9 @@ const ProjectDetails = () => {
         "Rating system for games",
       ],
       screenshots: [
-        "https://i.ibb.co/HgMG44p/gamex.png",
-        "https://i.ibb.co/HgMG44p/gamex.png",
-        "https://i.ibb.co/HgMG44p/gamex.png",
+        "https://i.ibb.co.com/5g7B0YLw/gamex2.png",
+        "https://i.ibb.co.com/8Lr5fsj5/gamex3.png",
+        "https://i.ibb.co.com/HLB1p6BS/gamex4.png",
       ],
     },
     {
@@ -117,9 +117,9 @@ const ProjectDetails = () => {
         "Customer support system",
       ],
       screenshots: [
-        "https://i.ibb.co/GWY3xp8/car-rental.png",
-        "https://i.ibb.co/GWY3xp8/car-rental.png",
-        "https://i.ibb.co/GWY3xp8/car-rental.png",
+        "https://i.ibb.co.com/s9dsZxNf/car-rental1.png",
+        "https://i.ibb.co.com/CsKq8fdk/car-rental3.png",
+        "https://i.ibb.co.com/nM5kqTpY/car-rental2.png",
       ],
     },
   ];

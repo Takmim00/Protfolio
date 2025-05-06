@@ -1,21 +1,11 @@
-"use client";
+"use client"
 
-import emailjs from "@emailjs/browser";
-import { motion, useAnimation, useInView } from "framer-motion";
-import {
-  Github,
-  Instagram,
-  Linkedin,
-  Loader2,
-  Mail,
-  MapPin,
-  Phone,
-  Send,
-  Twitter,
-} from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import emailjs from "@emailjs/browser"
+import { motion, useAnimation, useInView } from "framer-motion"
+import { Github, Instagram, Linkedin, Loader2, Mail, MapPin, Phone, Send, Twitter } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import { toast, ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -23,14 +13,14 @@ const Contact = () => {
     email: "",
     subject: "",
     message: "",
-  });
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [activeTab, setActiveTab] = useState("message");
-  const formRef = useRef(null);
-  const containerRef = useRef(null);
-  const isInView = useInView(containerRef, { once: false, threshold: 0.2 });
-  const controls = useAnimation();
+  })
+  const [errors, setErrors] = useState({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [activeTab, setActiveTab] = useState("message")
+  const formRef = useRef(null)
+  const containerRef = useRef(null)
+  const isInView = useInView(containerRef, { once: false, threshold: 0.2 })
+  const controls = useAnimation()
 
   // Floating elements animation
   const floatingElements = Array.from({ length: 15 }).map((_, i) => ({
@@ -40,79 +30,80 @@ const Contact = () => {
     y: Math.random() * 100,
     duration: Math.random() * 10 + 15,
     delay: Math.random() * 5,
-  }));
+  }))
 
   useEffect(() => {
     if (isInView) {
-      controls.start("visible");
+      controls.start("visible")
     }
-  }, [isInView, controls]);
+  }, [isInView, controls])
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
 
     // Clear error when user types
     if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
+      setErrors((prev) => ({ ...prev, [name]: "" }))
     }
-  };
+  }
 
   const validateForm = () => {
-    const newErrors = {};
+    const newErrors = {}
 
-    if (!formData.name.trim()) newErrors.name = "Name is required";
+    if (!formData.name.trim()) newErrors.name = "Name is required"
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = "Email is required"
     } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
+      newErrors.email = "Email is invalid"
     }
-    if (!formData.subject.trim()) newErrors.subject = "Subject is required";
-    if (!formData.message.trim()) newErrors.message = "Message is required";
+    if (!formData.subject.trim()) newErrors.subject = "Subject is required"
+    if (!formData.message.trim()) newErrors.message = "Message is required"
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!validateForm()) return;
-
-    setIsSubmitting(true);
-
+    e.preventDefault()
+    if (!validateForm()) return
+    setIsSubmitting(true)
     try {
-      // Replace with your EmailJS service ID, template ID, and public key
-      const serviceId = "service_e9iqelg";
-      const templateId = "template_ecf26bv";
-      const publicKey = "_FMPfnej307GndFRC";
+      const serviceId = "service_e9iqelg"
+      const templateId = "template_ecf26bv"
+      const publicKey = "_FMPfnej307GndFRC"
 
-      if (formRef.current) {
-        await emailjs.sendForm(
-          serviceId,
-          templateId,
-          formRef.current,
-          publicKey
-        );
-        toast.success("Message sent successfully! I'll get back to you soon.");
-        setFormData({ name: "", email: "", subject: "", message: "" });
+      // Include the subject in the message body since the template has a hardcoded subject
+      const enhancedMessage = `Subject: ${formData.subject}\n\n${formData.message}`
+
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        // Still include the subject in case the template is updated later
+        subject: formData.subject,
+        // Include the subject in the message body
+        message: enhancedMessage,
+        // For reply functionality
+        reply_to: formData.email,
       }
+
+      console.log("Sending email with params:", templateParams)
+
+      await emailjs.send(serviceId, templateId, templateParams, publicKey)
+
+      toast.success("Message sent successfully! I'll get back to you soon.")
+      setFormData({ name: "", email: "", subject: "", message: "" })
     } catch (error) {
-      console.error("Failed to send email:", error);
-      toast.error("Failed to send message. Please try again later.");
+      console.error("Failed to send email:", error)
+      toast.error("Failed to send message. Please try again later.")
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
   return (
-    <section
-      ref={containerRef}
-      className="relative py-18 overflow-hidden bg-gradient-to-b from-black to-gray-900"
-      id="contact"
-    >
+    <section ref={containerRef} className="relative py-18 overflow-hidden bg-gradient-to-b from-black " id="contact">
       <ToastContainer position="top-right" theme="dark" />
-
       {/* Floating elements background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {floatingElements.map((el) => (
@@ -135,17 +126,10 @@ const Contact = () => {
           />
         ))}
       </div>
-
       {/* Hexagon grid background */}
       <div className="absolute inset-0 opacity-5">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <pattern
-            id="hexagons"
-            width="50"
-            height="43.4"
-            patternUnits="userSpaceOnUse"
-            patternTransform="scale(2)"
-          >
+          <pattern id="hexagons" width="50" height="43.4" patternUnits="userSpaceOnUse" patternTransform="scale(2)">
             <path
               d="M25,0 L50,14.4 L50,43.4 L25,57.8 L0,43.4 L0,14.4 Z"
               fill="none"
@@ -156,7 +140,6 @@ const Contact = () => {
           <rect width="100%" height="100%" fill="url(#hexagons)" />
         </svg>
       </div>
-
       <div className="container relative z-10 px-4 mx-auto">
         {/* Section header */}
         <motion.div
@@ -197,7 +180,6 @@ const Contact = () => {
             Let's collaborate and bring your ideas to life
           </motion.p>
         </motion.div>
-
         {/* Main contact card */}
         <motion.div
           className="max-w-5xl mx-auto"
@@ -215,7 +197,6 @@ const Contact = () => {
             {/* Decorative elements */}
             <div className="absolute top-0 left-0 w-40 h-40 bg-gradient-to-r from-amber-500/20 to-orange-600/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
             <div className="absolute bottom-0 right-0 w-60 h-60 bg-gradient-to-r from-orange-600/20 to-amber-500/20 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
-
             {/* Content container */}
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-5">
               {/* Left side - Contact info */}
@@ -234,7 +215,6 @@ const Contact = () => {
                 >
                   Contact Information
                 </motion.h3>
-
                 <div className="space-y-8">
                   {/* Contact details with staggered animations */}
                   {[
@@ -276,9 +256,7 @@ const Contact = () => {
                         <item.icon className="w-5 h-5 text-amber-400" />
                       </div>
                       <div>
-                        <h4 className="text-lg font-medium text-white">
-                          {item.title}
-                        </h4>
+                        <h4 className="text-lg font-medium text-white">{item.title}</h4>
                         {item.link ? (
                           <a
                             href={item.link}
@@ -293,7 +271,6 @@ const Contact = () => {
                     </motion.div>
                   ))}
                 </div>
-
                 {/* Social media links */}
                 <motion.div
                   className="mt-12 pt-8 border-t border-gray-800/50"
@@ -306,9 +283,7 @@ const Contact = () => {
                     },
                   }}
                 >
-                  <h4 className="mb-6 text-lg font-medium text-white">
-                    Follow Me
-                  </h4>
+                  <h4 className="mb-6 text-lg font-medium text-white">Follow Me</h4>
                   <div className="flex flex-wrap gap-4">
                     {[
                       {
@@ -363,7 +338,6 @@ const Contact = () => {
                   </div>
                 </motion.div>
               </div>
-
               {/* Right side - Form */}
               <div className="p-8 lg:p-12 lg:col-span-3">
                 {/* Mobile tabs */}
@@ -389,7 +363,6 @@ const Contact = () => {
                     Contact Info
                   </button>
                 </div>
-
                 {/* Mobile contact info (shown only on mobile when activeTab is "info") */}
                 {activeTab === "info" && (
                   <div className="lg:hidden space-y-6 mb-8">
@@ -417,9 +390,7 @@ const Contact = () => {
                           <item.icon className="w-4 h-4 text-amber-400" />
                         </div>
                         <div>
-                          <h4 className="text-base font-medium text-white">
-                            {item.title}
-                          </h4>
+                          <h4 className="text-base font-medium text-white">{item.title}</h4>
                           {item.link ? (
                             <a
                               href={item.link}
@@ -428,9 +399,7 @@ const Contact = () => {
                               {item.value}
                             </a>
                           ) : (
-                            <p className="text-sm text-gray-400">
-                              {item.value}
-                            </p>
+                            <p className="text-sm text-gray-400">{item.value}</p>
                           )}
                         </div>
                       </div>
@@ -438,9 +407,7 @@ const Contact = () => {
 
                     {/* Social links for mobile */}
                     <div className="pt-6 border-t border-gray-800/50">
-                      <h4 className="mb-4 text-base font-medium text-white">
-                        Follow Me
-                      </h4>
+                      <h4 className="mb-4 text-base font-medium text-white">Follow Me</h4>
                       <div className="flex gap-3">
                         {[
                           { icon: Github, href: "https://github.com/Takmim00" },
@@ -452,7 +419,7 @@ const Contact = () => {
                             icon: Instagram,
                             href: "https://www.instagram.com/takmim_00/",
                           },
-                          { icon: Twitter, href: "#" },
+                          { icon: Twitter, href: "https://x.com/MTakmim58515" },
                         ].map((social, index) => (
                           <a
                             key={index}
@@ -468,7 +435,6 @@ const Contact = () => {
                     </div>
                   </div>
                 )}
-
                 {/* Contact form (shown on desktop or when activeTab is "message") */}
                 {(activeTab === "message" || window.innerWidth >= 1024) && (
                   <>
@@ -486,11 +452,7 @@ const Contact = () => {
                       Send Me a Message
                     </motion.h3>
 
-                    <form
-                      ref={formRef}
-                      onSubmit={handleSubmit}
-                      className="space-y-6"
-                    >
+                    <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
                       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         {/* Name field */}
                         <motion.div
@@ -504,9 +466,7 @@ const Contact = () => {
                             },
                           }}
                         >
-                          <label className="block mb-2 text-sm font-medium text-white">
-                            Your Name
-                          </label>
+                          <label className="block mb-2 text-sm font-medium text-white">Your Name</label>
                           <div
                             className={`relative rounded-lg overflow-hidden ${
                               errors.name ? "ring-2 ring-red-500" : ""
@@ -520,11 +480,7 @@ const Contact = () => {
                               className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:outline-none focus:border-amber-400 transition-colors duration-300"
                               placeholder="Your Name"
                             />
-                            {errors.name && (
-                              <p className="mt-1 text-xs text-red-500">
-                                {errors.name}
-                              </p>
-                            )}
+                            {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
                           </div>
                         </motion.div>
 
@@ -540,9 +496,7 @@ const Contact = () => {
                             },
                           }}
                         >
-                          <label className="block mb-2 text-sm font-medium text-white">
-                            Email Address
-                          </label>
+                          <label className="block mb-2 text-sm font-medium text-white">Email Address</label>
                           <div
                             className={`relative rounded-lg overflow-hidden ${
                               errors.email ? "ring-2 ring-red-500" : ""
@@ -556,11 +510,7 @@ const Contact = () => {
                               className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:outline-none focus:border-amber-400 transition-colors duration-300"
                               placeholder="your.email@example.com"
                             />
-                            {errors.email && (
-                              <p className="mt-1 text-xs text-red-500">
-                                {errors.email}
-                              </p>
-                            )}
+                            {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
                           </div>
                         </motion.div>
                       </div>
@@ -577,9 +527,7 @@ const Contact = () => {
                           },
                         }}
                       >
-                        <label className="block mb-2 text-sm font-medium text-white">
-                          Subject
-                        </label>
+                        <label className="block mb-2 text-sm font-medium text-white">Subject</label>
                         <div
                           className={`relative rounded-lg overflow-hidden ${
                             errors.subject ? "ring-2 ring-red-500" : ""
@@ -593,11 +541,7 @@ const Contact = () => {
                             className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:outline-none focus:border-amber-400 transition-colors duration-300"
                             placeholder="Project Inquiry"
                           />
-                          {errors.subject && (
-                            <p className="mt-1 text-xs text-red-500">
-                              {errors.subject}
-                            </p>
-                          )}
+                          {errors.subject && <p className="mt-1 text-xs text-red-500">{errors.subject}</p>}
                         </div>
                       </motion.div>
 
@@ -613,9 +557,7 @@ const Contact = () => {
                           },
                         }}
                       >
-                        <label className="block mb-2 text-sm font-medium text-white">
-                          Your Message
-                        </label>
+                        <label className="block mb-2 text-sm font-medium text-white">Your Message</label>
                         <div
                           className={`relative rounded-lg overflow-hidden ${
                             errors.message ? "ring-2 ring-red-500" : ""
@@ -629,11 +571,7 @@ const Contact = () => {
                             className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:outline-none focus:border-amber-400 transition-colors duration-300 resize-none"
                             placeholder="Tell me about your project or idea..."
                           />
-                          {errors.message && (
-                            <p className="mt-1 text-xs text-red-500">
-                              {errors.message}
-                            </p>
-                          )}
+                          {errors.message && <p className="mt-1 text-xs text-red-500">{errors.message}</p>}
                         </div>
                       </motion.div>
 
@@ -678,7 +616,6 @@ const Contact = () => {
             </div>
           </div>
         </motion.div>
-
         {/* Decorative elements at bottom */}
         <div className="flex justify-center mt-16">
           <motion.div
@@ -692,7 +629,7 @@ const Contact = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Contact;
+export default Contact
