@@ -199,8 +199,8 @@ const Contact = () => {
             <div className="absolute bottom-0 right-0 w-60 h-60 bg-gradient-to-r from-orange-600/20 to-amber-500/20 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
             {/* Content container */}
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-5">
-              {/* Left side - Contact info */}
-              <div className="p-8 lg:p-12 lg:col-span-2 bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur-md">
+              {/* Left side - Contact info (always visible on desktop) */}
+              <div className="p-8 lg:p-12 lg:col-span-2 bg-gradient-to-br from-gray-900/80 to-black/80 backdrop-blur-md hidden lg:block">
                 <motion.h3
                   className="mb-6 text-2xl font-bold text-white"
                   initial={{ opacity: 0, x: -20 }}
@@ -349,6 +349,7 @@ const Contact = () => {
                         : "text-gray-400 border-b border-gray-800"
                     }`}
                     onClick={() => setActiveTab("message")}
+                    type="button"
                   >
                     Send Message
                   </button>
@@ -359,85 +360,89 @@ const Contact = () => {
                         : "text-gray-400 border-b border-gray-800"
                     }`}
                     onClick={() => setActiveTab("info")}
+                    type="button"
                   >
                     Contact Info
                   </button>
                 </div>
-                {/* Mobile contact info (shown only on mobile when activeTab is "info") */}
-                {activeTab === "info" && (
-                  <div className="lg:hidden space-y-6 mb-8">
-                    {[
-                      {
-                        icon: Mail,
-                        title: "Email",
-                        value: "takmimm@gmail.com",
-                        link: "mailto:takmimm@gmail.com",
-                      },
-                      {
-                        icon: Phone,
-                        title: "Phone",
-                        value: "+880 1824096141",
-                        link: "tel:+8801824096141",
-                      },
-                      {
-                        icon: MapPin,
-                        title: "Location",
-                        value: "Alangkar, Chittagong, Bangladesh",
-                      },
-                    ].map((item, index) => (
-                      <div key={index} className="flex items-start gap-4">
-                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-amber-500/20 to-orange-600/20">
-                          <item.icon className="w-4 h-4 text-amber-400" />
-                        </div>
-                        <div>
-                          <h4 className="text-base font-medium text-white">{item.title}</h4>
-                          {item.link ? (
-                            <a
-                              href={item.link}
-                              className="text-sm text-gray-400 hover:text-amber-400 transition-colors duration-300"
-                            >
-                              {item.value}
-                            </a>
-                          ) : (
-                            <p className="text-sm text-gray-400">{item.value}</p>
-                          )}
-                        </div>
-                      </div>
-                    ))}
 
-                    {/* Social links for mobile */}
-                    <div className="pt-6 border-t border-gray-800/50">
-                      <h4 className="mb-4 text-base font-medium text-white">Follow Me</h4>
-                      <div className="flex gap-3">
-                        {[
-                          { icon: Github, href: "https://github.com/Takmim00" },
-                          {
-                            icon: Linkedin,
-                            href: "https://www.linkedin.com/in/asm-maghferat-takmim89/",
-                          },
-                          {
-                            icon: Instagram,
-                            href: "https://www.instagram.com/takmim_00/",
-                          },
-                          { icon: Twitter, href: "https://x.com/MTakmim58515" },
-                        ].map((social, index) => (
-                          <a
-                            key={index}
-                            href={social.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-center w-9 h-9 rounded-full border border-gray-700 bg-gray-900 text-gray-400 hover:text-white hover:border-amber-400 transition-all duration-300"
-                          >
-                            <social.icon className="w-4 h-4" />
-                          </a>
-                        ))}
+                {/* Mobile view content */}
+                <div className="lg:hidden">
+                  {/* Contact info tab content */}
+                  {activeTab === "info" && (
+                    <div className="space-y-6 mb-8">
+                      {[
+                        {
+                          icon: Mail,
+                          title: "Email",
+                          value: "takmimm@gmail.com",
+                          link: "mailto:takmimm@gmail.com",
+                        },
+                        {
+                          icon: Phone,
+                          title: "Phone",
+                          value: "+880 1824096141",
+                          link: "tel:+8801824096141",
+                        },
+                        {
+                          icon: MapPin,
+                          title: "Location",
+                          value: "Alangkar, Chittagong, Bangladesh",
+                        },
+                      ].map((item, index) => (
+                        <div key={index} className="flex items-start gap-4">
+                          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-amber-500/20 to-orange-600/20">
+                            <item.icon className="w-4 h-4 text-amber-400" />
+                          </div>
+                          <div>
+                            <h4 className="text-base font-medium text-white">{item.title}</h4>
+                            {item.link ? (
+                              <a
+                                href={item.link}
+                                className="text-sm text-gray-400 hover:text-amber-400 transition-colors duration-300"
+                              >
+                                {item.value}
+                              </a>
+                            ) : (
+                              <p className="text-sm text-gray-400">{item.value}</p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+
+                      {/* Social links for mobile */}
+                      <div className="pt-6 border-t border-gray-800/50">
+                        <h4 className="mb-4 text-base font-medium text-white">Follow Me</h4>
+                        <div className="flex gap-3">
+                          {[
+                            { icon: Github, href: "https://github.com/Takmim00" },
+                            {
+                              icon: Linkedin,
+                              href: "https://www.linkedin.com/in/asm-maghferat-takmim89/",
+                            },
+                            {
+                              icon: Instagram,
+                              href: "https://www.instagram.com/takmim_00/",
+                            },
+                            { icon: Twitter, href: "https://x.com/MTakmim58515" },
+                          ].map((social, index) => (
+                            <a
+                              key={index}
+                              href={social.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center justify-center w-9 h-9 rounded-full border border-gray-700 bg-gray-900 text-gray-400 hover:text-white hover:border-amber-400 transition-all duration-300"
+                            >
+                              <social.icon className="w-4 h-4" />
+                            </a>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
-                {/* Contact form (shown on desktop or when activeTab is "message") */}
-                {(activeTab === "message" || window.innerWidth >= 1024) && (
-                  <>
+                  )}
+
+                  {/* Message form tab content - KEY FIX: Always render the form but control visibility with CSS */}
+                  <div className={activeTab === "message" ? "block" : "hidden"}>
                     <motion.h3
                       className="mb-6 text-2xl font-bold text-white"
                       initial={{ opacity: 0 }}
@@ -610,8 +615,176 @@ const Contact = () => {
                         </button>
                       </motion.div>
                     </form>
-                  </>
-                )}
+                  </div>
+                </div>
+
+                {/* Desktop form (always visible) */}
+                <div className="hidden lg:block">
+                  <motion.h3
+                    className="mb-6 text-2xl font-bold text-white"
+                    initial={{ opacity: 0 }}
+                    animate={controls}
+                    variants={{
+                      visible: {
+                        opacity: 1,
+                        transition: { duration: 0.6, delay: 0.4 },
+                      },
+                    }}
+                  >
+                    Send Me a Message
+                  </motion.h3>
+
+                  <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                      {/* Name field */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={controls}
+                        variants={{
+                          visible: {
+                            opacity: 1,
+                            y: 0,
+                            transition: { duration: 0.6, delay: 0.5 },
+                          },
+                        }}
+                      >
+                        <label className="block mb-2 text-sm font-medium text-white">Your Name</label>
+                        <div
+                          className={`relative rounded-lg overflow-hidden ${errors.name ? "ring-2 ring-red-500" : ""}`}
+                        >
+                          <input
+                            type="text"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:outline-none focus:border-amber-400 transition-colors duration-300"
+                            placeholder="Your Name"
+                          />
+                          {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
+                        </div>
+                      </motion.div>
+
+                      {/* Email field */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={controls}
+                        variants={{
+                          visible: {
+                            opacity: 1,
+                            y: 0,
+                            transition: { duration: 0.6, delay: 0.6 },
+                          },
+                        }}
+                      >
+                        <label className="block mb-2 text-sm font-medium text-white">Email Address</label>
+                        <div
+                          className={`relative rounded-lg overflow-hidden ${errors.email ? "ring-2 ring-red-500" : ""}`}
+                        >
+                          <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:outline-none focus:border-amber-400 transition-colors duration-300"
+                            placeholder="your.email@example.com"
+                          />
+                          {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
+                        </div>
+                      </motion.div>
+                    </div>
+
+                    {/* Subject field */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={controls}
+                      variants={{
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          transition: { duration: 0.6, delay: 0.7 },
+                        },
+                      }}
+                    >
+                      <label className="block mb-2 text-sm font-medium text-white">Subject</label>
+                      <div
+                        className={`relative rounded-lg overflow-hidden ${errors.subject ? "ring-2 ring-red-500" : ""}`}
+                      >
+                        <input
+                          type="text"
+                          name="subject"
+                          value={formData.subject}
+                          onChange={handleChange}
+                          className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:outline-none focus:border-amber-400 transition-colors duration-300"
+                          placeholder="Project Inquiry"
+                        />
+                        {errors.subject && <p className="mt-1 text-xs text-red-500">{errors.subject}</p>}
+                      </div>
+                    </motion.div>
+
+                    {/* Message field */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={controls}
+                      variants={{
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          transition: { duration: 0.6, delay: 0.8 },
+                        },
+                      }}
+                    >
+                      <label className="block mb-2 text-sm font-medium text-white">Your Message</label>
+                      <div
+                        className={`relative rounded-lg overflow-hidden ${errors.message ? "ring-2 ring-red-500" : ""}`}
+                      >
+                        <textarea
+                          name="message"
+                          value={formData.message}
+                          onChange={handleChange}
+                          rows={5}
+                          className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 text-white rounded-lg focus:outline-none focus:border-amber-400 transition-colors duration-300 resize-none"
+                          placeholder="Tell me about your project or idea..."
+                        />
+                        {errors.message && <p className="mt-1 text-xs text-red-500">{errors.message}</p>}
+                      </div>
+                    </motion.div>
+
+                    {/* Submit button */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={controls}
+                      variants={{
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          transition: { duration: 0.6, delay: 0.9 },
+                        },
+                      }}
+                      className="flex justify-end"
+                    >
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium transition-all bg-transparent rounded-lg border-2 border-amber-400 text-amber-400 hover:text-white disabled:opacity-70 disabled:cursor-not-allowed"
+                      >
+                        <span className="absolute inset-0 h-full w-full scale-0 rounded-lg bg-gradient-to-r from-amber-400 to-orange-600 transition-all duration-300 ease-out group-hover:scale-100 group-hover:opacity-90"></span>
+                        <span className="relative flex items-center justify-center gap-2">
+                          {isSubmitting ? (
+                            <>
+                              <Loader2 className="w-5 h-5 animate-spin" />
+                              Sending...
+                            </>
+                          ) : (
+                            <>
+                              Send Message
+                              <Send className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                            </>
+                          )}
+                        </span>
+                      </button>
+                    </motion.div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>

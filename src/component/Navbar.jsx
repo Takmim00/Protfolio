@@ -1,72 +1,74 @@
-import { Download, Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import logo from "../assets/logo.png";
-import resume from "../assets/My_Resume.pdf";
+"use client"
 
-const cn = (...classes) => classes.filter(Boolean).join(" ");
+import { Download, Menu, X } from "lucide-react"
+import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
+import logo from "../assets/logo.png"
+import resume from "../assets/My_Resume.pdf"
+
+const cn = (...classes) => classes.filter(Boolean).join(" ")
 
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("banner");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [activeSection, setActiveSection] = useState("banner")
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   // Handle scroll effects and section highlighting
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 20)
 
-      const sections = ["banner", "about", "skill", "project", "contact"];
+      const sections = ["banner", "about", "skill", "project", "contact"]
       const currentSection = sections.find((section) => {
-        const element = document.getElementById(section);
-        if (!element) return false;
+        const element = document.getElementById(section)
+        if (!element) return false
 
-        const rect = element.getBoundingClientRect();
-        return rect.top <= 100 && rect.bottom >= 100;
-      });
+        const rect = element.getBoundingClientRect()
+        return rect.top <= 100 && rect.bottom >= 100
+      })
 
       if (currentSection) {
-        setActiveSection(currentSection);
+        setActiveSection(currentSection)
       }
-    };
+    }
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   // Close mobile menu on resize to desktop
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
-        setMobileMenuOpen(false);
-        document.body.style.overflow = ""; // unlock scroll
+        setMobileMenuOpen(false)
+        document.body.style.overflow = "" // unlock scroll
       }
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    }
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
 
   // Lock scroll when mobile menu is open
   useEffect(() => {
-    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
-  }, [mobileMenuOpen]);
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : ""
+  }, [mobileMenuOpen])
 
   const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
+    const element = document.getElementById(sectionId)
     if (element) {
       window.scrollTo({
         top: element.offsetTop - 80,
         behavior: "smooth",
-      });
+      })
     }
-    setMobileMenuOpen(false);
-  };
+    setMobileMenuOpen(false)
+  }
 
   return (
     <nav
       className={cn(
         "fixed top-0 left-0 w-full z-50 transition-all duration-300 backdrop-blur-md",
-        isScrolled ? "bg-black/40 py-3 shadow-lg" : "bg-transparent py-5"
+        isScrolled ? "bg-black/40 py-3 shadow-lg" : "bg-transparent py-5",
       )}
     >
       <div className="container mx-auto px-4 md:px-6">
@@ -76,28 +78,18 @@ export default function Navbar() {
             to="/"
             className="flex items-center"
             onClick={(e) => {
-              e.preventDefault();
-              scrollToSection("banner");
+              e.preventDefault()
+              scrollToSection("banner")
             }}
           >
-            <Link
-              to="/"
-              className="relative h-14 w-14 md:h-16 md:w-16 overflow-hidden"
-            >
-              <img
-                src={logo}
-                alt="Portfolio Logo"
-                className="object-contain h-full w-full"
-              />
+            <Link to="/" className="relative h-14 w-14 md:h-16 md:w-16 overflow-hidden">
+              <img src={logo || "/placeholder.svg"} alt="Portfolio Logo" className="object-contain h-full w-full" />
             </Link>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <NavLinks
-              activeSection={activeSection}
-              scrollToSection={scrollToSection}
-            />
+            <NavLinks activeSection={activeSection} scrollToSection={scrollToSection} />
           </div>
 
           {/* Resume Button (Desktop) */}
@@ -124,11 +116,7 @@ export default function Navbar() {
             className="md:hidden text-white bg-orange-500 hover:bg-orange-600 p-2 rounded-full transition-colors"
             onClick={() => setMobileMenuOpen((prev) => !prev)}
           >
-            {mobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </div>
@@ -136,18 +124,24 @@ export default function Navbar() {
       {/* Mobile Menu */}
       <div
         className={cn(
-          "fixed inset-0 z-40 bg-black/95 backdrop-blur-lg transform transition-transform duration-300 ease-in-out",
-          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          "fixed inset-0 z-40 bg-black/80 backdrop-blur-xl transform transition-transform duration-300 ease-in-out",
+          mobileMenuOpen ? "translate-x-0" : "translate-x-full",
         )}
       >
-        <div className="flex flex-col h-full pt-24 px-8">
-          <div className="flex flex-col space-y-2">
-            <MobileNavLinks
-              activeSection={activeSection}
-              scrollToSection={scrollToSection}
-            />
+        {/* Close button inside the overlay */}
+        <button
+          className="absolute top-5 right-5 text-white bg-orange-500 hover:bg-orange-600 p-2 rounded-full transition-colors z-50"
+          onClick={() => setMobileMenuOpen(false)}
+        >
+          <X className="h-6 w-6" />
+        </button>
+
+        <div className="flex flex-col h-full pt-24 px-8 relative z-10">
+          <div className="absolute inset-0 bg-gradient-to-b from-orange-500/10 to-black/30 pointer-events-none"></div>
+          <div className="flex flex-col space-y-2 relative">
+            <MobileNavLinks activeSection={activeSection} scrollToSection={scrollToSection} />
           </div>
-          <div className="mt-8">
+          <div className="mt-8 relative">
             <a
               href={resume}
               download="My_Resume"
@@ -160,7 +154,7 @@ export default function Navbar() {
         </div>
       </div>
     </nav>
-  );
+  )
 }
 
 function NavLinks({ activeSection, scrollToSection }) {
@@ -198,7 +192,7 @@ function NavLinks({ activeSection, scrollToSection }) {
         scrollToSection={scrollToSection}
       />
     </>
-  );
+  )
 }
 
 function MobileNavLinks({ activeSection, scrollToSection }) {
@@ -235,29 +229,27 @@ function MobileNavLinks({ activeSection, scrollToSection }) {
         scrollToSection={scrollToSection}
       />
     </>
-  );
+  )
 }
 
 function NavLink({ sectionId, label, isActive, scrollToSection }) {
-  const cn = (...classes) => classes.filter(Boolean).join(" ");
+  const cn = (...classes) => classes.filter(Boolean).join(" ")
   return (
     <a
       href={`#${sectionId}`}
       className={cn(
         "relative text-white font-medium text-lg transition-colors duration-300",
         "after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-orange-500 after:transition-all after:duration-300",
-        isActive
-          ? "text-orange-500 after:w-full"
-          : "hover:text-orange-500 after:w-0 hover:after:w-full"
+        isActive ? "text-orange-500 after:w-full" : "hover:text-orange-500 after:w-0 hover:after:w-full",
       )}
       onClick={(e) => {
-        e.preventDefault();
-        scrollToSection(sectionId);
+        e.preventDefault()
+        scrollToSection(sectionId)
       }}
     >
       {label}
     </a>
-  );
+  )
 }
 
 function MobileNavLink({ sectionId, label, isActive, scrollToSection }) {
@@ -268,14 +260,14 @@ function MobileNavLink({ sectionId, label, isActive, scrollToSection }) {
         "text-xl font-medium py-2 px-4 rounded-lg transition-all duration-200",
         isActive
           ? "bg-orange-500/20 text-orange-500 border-l-4 border-orange-500"
-          : "text-white hover:text-orange-500 hover:bg-white/5 border-l-4 border-transparent"
+          : "text-white hover:text-orange-500 hover:bg-white/5 border-l-4 border-transparent",
       )}
       onClick={(e) => {
-        e.preventDefault();
-        scrollToSection(sectionId);
+        e.preventDefault()
+        scrollToSection(sectionId)
       }}
     >
       {label}
     </a>
-  );
+  )
 }

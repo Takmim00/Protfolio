@@ -150,7 +150,7 @@ const SkillsShowcase = () => {
       name: "HTML5",
       icon: FaHtml5,
       color: "#E34F26",
-      level: 95,
+      level: 100,
       category: "frontend",
       description: "Semantic markup and accessibility",
       details:
