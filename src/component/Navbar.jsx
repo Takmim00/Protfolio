@@ -124,7 +124,7 @@ export default function Navbar() {
       {/* Mobile Menu */}
       <div
         className={cn(
-          "fixed inset-0 z-40 bg-black/80 backdrop-blur-xl transform transition-transform duration-300 ease-in-out",
+          "fixed inset-0 z-40 bg-black/80 backdrop-blur-3xl transform transition-transform duration-300 ease-in-out",
           mobileMenuOpen ? "translate-x-0" : "translate-x-full",
         )}
       >
@@ -136,9 +136,9 @@ export default function Navbar() {
           <X className="h-6 w-6" />
         </button>
 
-        <div className="flex flex-col h-full pt-24 px-8 relative z-10">
-          <div className="absolute inset-0 bg-gradient-to-b from-orange-500/10 to-black/30 pointer-events-none"></div>
-          <div className="flex flex-col space-y-2 relative">
+        <div className="flex flex-col h-full pt-24 px-8 relative z-10  ">
+          <div className="absolute inset-0 bg-gradient-to-b from-orange-500/10  to-black/30 pointer-events-none"></div>
+          <div className="flex flex-col space-y-2 relative bg-black/50  backdrop-blur-2xl">
             <MobileNavLinks activeSection={activeSection} scrollToSection={scrollToSection} />
           </div>
           <div className="mt-8 relative">
@@ -257,7 +257,7 @@ function MobileNavLink({ sectionId, label, isActive, scrollToSection }) {
     <a
       href={`#${sectionId}`}
       className={cn(
-        "text-xl font-medium py-2 px-4 rounded-lg transition-all duration-200",
+        "text-xl font-medium backdrop-blur-xl py-2 px-4 rounded-lg transition-all duration-200",
         isActive
           ? "bg-orange-500/20 text-orange-500 border-l-4 border-orange-500"
           : "text-white hover:text-orange-500 hover:bg-white/5 border-l-4 border-transparent",

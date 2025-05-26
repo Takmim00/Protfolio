@@ -17,7 +17,7 @@ const FloatingParticles = ({ count = 80, color = "rgba(251, 191, 36, 0.3)", maxD
     // Set canvas dimensions
     const resizeCanvas = () => {
       canvas.width = window.innerWidth
-      canvas.height = window.innerHeight * 1.2 // Make it a bit taller to ensure full coverage
+      canvas.height = window.innerHeight * 1.2 
     }
 
     resizeCanvas()
