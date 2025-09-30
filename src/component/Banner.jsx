@@ -247,11 +247,11 @@ const Banner = () => {
   return (
     <div className="pt-14 bg-gradient-to-b from-black to-gray-900 text-white">
       {/* Floating Particles Background */}
-      <canvas
+      {/* <canvas
         ref={canvasRef}
         className="fixed inset-0 z-0 pointer-events-none"
         style={{ background: "transparent" }}
-      />
+      /> */}
 
       <div className="container mx-auto md:px-16 py-16 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between">
