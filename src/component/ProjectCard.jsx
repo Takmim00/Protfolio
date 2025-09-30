@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const ProjectCard = ({ project }) => {
-  console.log(project);
+
   const [isHovered, setIsHovered] = useState(false);
 
   // Generate a gradient based on the project category

@@ -399,7 +399,7 @@ const Banner = () => {
                 transition={{ duration: 0.5, delay: 1 }}
               >
                 <div className="text-center">
-                  <p className="text-amber-400 text-sm font-bold">1+ Years</p>
+                  <p className="text-amber-400 text-sm font-bold">0+ Years</p>
                   <p className="text-white text-xs">Experience</p>
                 </div>
               </motion.div>
