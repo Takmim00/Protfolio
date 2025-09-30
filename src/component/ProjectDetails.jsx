@@ -122,6 +122,42 @@ const ProjectDetails = () => {
         "https://i.ibb.co.com/nM5kqTpY/car-rental2.png",
       ],
     },
+    {
+      id: 4,
+      title: "Smart Med Appointments",
+      description:
+        "Smart Med Appointments is an AI-powered healthcare web application that brings multiple medical services into a single platform. It allows users to book doctor appointments based on specialty and availability, request ambulance services with real-time tracking, donate/request blood, and share reviews of doctors. Integrated with Gemini AI, the platform also provides intelligent health-related query assistance and personalized doctor recommendations. The project focuses on improving accessibility, efficiency, and transparency in healthcare delivery.",
+      image: "https://i.ibb.co.com/jYM0Zrd/smart-med.png",
+      liveLink: "https://smart-med-appointments.vercel.app/",
+      clientRepo:
+        "https://github.com/ahanaf607307/smart-med-appointments-healthcare-nextjs",
+      overlayText: "Explore More",
+      category: "Healthcare",
+      technology: [
+        "Next.js",
+        "TailwindCSS",
+        "Node.js",
+        "Express.js",
+        "MongoDB (Mongoose)",
+        "NextAuth",
+        "JWT",
+        "Axios",
+        "Gemini AI",
+      ],
+      features: [
+        "AI-powered health assistant using Gemini AI for queries and doctor recommendations",
+        "Dynamic appointment system for booking consultations with doctors",
+        "Doctor review and rating system to enhance transparency",
+        "Ambulance booking with real-time location tracking",
+        "Blood donation and request management system",
+        "Secure authentication and role-based access using NextAuth and JWT",
+      ],
+      screenshots: [
+        "https://i.ibb.co.com/V0wKVF00/smart-med1.png",
+        "https://i.ibb.co.com/5xBD0hcn/smart-med2.png",
+        "https://i.ibb.co.com/5X5hy4GQ/smart-med3.png",
+      ],
+    },
   ];
 
   // Find the project by ID
